@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime"
+	"strconv"
 
 	"github.com/wizjin/weixin"
 )
@@ -30,8 +31,23 @@ func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 		w.ReplyText("输入错误")
 	} else {
 		c := Substr(txt, 0, 1)
-		n := Substr(txt, 1, 1)
-		w.ReplyText(c + n) // 回复一条文本消息
+		n, err := strconv.Atoi(Substr(txt, 1, 1))
+		if err != nil {
+			w.ReplyText("输入错误")
+		} else {
+			switch c {
+			case "c":
+				w.ReplyText(Create(n)) // 回复一条文本消息
+			case "k":
+				w.ReplyText(Kill(n)) // 回复一条文本消息
+			case "s":
+				w.ReplyText(CheckWolf(n)) // 回复一条文本消息
+			case "dd":
+				w.ReplyText(GetDeads()) // 回复一条文本消息
+			case "j":
+				w.ReplyText(Join(n)) // 回复一条文本消息
+			}
+		}
 		//w.PostText("Post:" + txt) // 发送一条文本消息
 	}
 }

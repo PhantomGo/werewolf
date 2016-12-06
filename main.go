@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"runtime"
 
@@ -17,10 +18,17 @@ func main() {
 	mux.HandleFunc(weixin.MsgTypeText, Echo)
 	// 注册关注事件的处理函数
 	mux.HandleFunc(weixin.MsgTypeEventSubscribe, Subscribe)
-	http.Handle("/", mux)           // 注册接收微信服务器数据的接口URI
-	http.ListenAndServe(":80", nil) // 启动接收微信数据服务器
-
+	http.Handle("/", mux) // 注册接收微信服务器数据的接口URI
+	http.HandleFunc("/ss", hello)
+	err := http.ListenAndServe(":80", nil) // 启动接收微信数据服务器
+	if err != nil {
+		fmt.Println(err)
+	}
 	InitSignal()
+}
+
+func hello(rw http.ResponseWriter, req *http.Request) {
+	io.WriteString(rw, "hello phantom")
 }
 
 func Echo(w weixin.ResponseWriter, r *weixin.Request) {

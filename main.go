@@ -33,8 +33,8 @@ func hello(rw http.ResponseWriter, req *http.Request) {
 
 func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 	txt := r.Content // 获取用户发送的消息
-	dict := InitCommand()
-	w.ReplyText(dict[txt]) // 回复一条文本消息
+	//dict := InitCommand()
+	w.ReplyText(txt) // 回复一条文本消息
 	//w.PostText("Post:" + txt) // 发送一条文本消息
 }
 

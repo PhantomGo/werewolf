@@ -11,7 +11,7 @@ var (
 
 func Create(n int) string {
 	croom = room.NewRoom(n)
-	return "加入游戏请发 j"
+	return "加入游戏请发 j号码g 狼请发 j号码w"
 }
 
 func Join(n int) string {

@@ -26,11 +26,46 @@ func main() {
 
 func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 	txt := r.Content // 获取用户发送的消息
-	//dict := InitCommand()
-	w.ReplyText(txt) // 回复一条文本消息
-	//w.PostText("Post:" + txt) // 发送一条文本消息
+	if len(txt) < 2 {
+		w.ReplyText("输入错误")
+	} else {
+		c := Substr(txt, 0, 1)
+		n := Substr(txt, 1, 1)
+		w.ReplyText(c + n) // 回复一条文本消息
+		//w.PostText("Post:" + txt) // 发送一条文本消息
+	}
 }
 
 func Subscribe(w weixin.ResponseWriter, r *weixin.Request) {
-	w.ReplyText("欢迎关注") // 有新人关注，返回欢迎消息
+	w.ReplyText("创建游戏发送 c人数 杀人发 k号码 验人发 s号码") // 有新人关注，返回欢迎消息
+}
+
+func Substr(str string, start int, length int) string {
+	rs := []rune(str)
+	rl := len(rs)
+	end := 0
+
+	if start < 0 {
+		start = rl - 1 + start
+	}
+	end = start + length
+
+	if start > end {
+		start, end = end, start
+	}
+
+	if start < 0 {
+		start = 0
+	}
+	if start > rl {
+		start = rl
+	}
+	if end < 0 {
+		end = 0
+	}
+	if end > rl {
+		end = rl
+	}
+
+	return string(rs[start:end])
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"runtime"
 
@@ -12,7 +11,6 @@ import (
 func main() {
 	fmt.Println("This is webserver base!")
 	runtime.GOMAXPROCS(runtime.NumCPU())
-
 	mux := weixin.New("werewolf", "wx94f59dce884960bc", "e743cfb5ab3b914740f2f7d3a9de6f7b")
 	// 注册文本消息的处理函数
 	mux.HandleFunc(weixin.MsgTypeText, Echo)
@@ -24,10 +22,6 @@ func main() {
 		fmt.Println(err)
 	}
 	InitSignal()
-}
-
-func hello(rw http.ResponseWriter, req *http.Request) {
-	io.WriteString(rw, "hello phantom")
 }
 
 func Echo(w weixin.ResponseWriter, r *weixin.Request) {

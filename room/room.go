@@ -11,7 +11,7 @@ type Room struct {
 func NewRoom(count int) *Room {
 	r := &Room{Count: count, PIndex: 0, Id: 0}
 	r.Players = make([]*Player, count)
-	r.Deads = make([]int, 6)
+	r.Deads = make([]int, 0, 6)
 	return r
 }
 
@@ -23,11 +23,11 @@ func (this *Room) Join(n int, wolf bool) *Player {
 }
 
 func (this *Room) IsBegin() bool {
-	return this.PIndex+1 == this.Count
+	return this.PIndex == this.Count
 }
 
 func (this *Room) Kill(number int) {
-	this.Players[number-1].IsDead = true
+	//this.Players[number-1].IsDead = true
 	this.Deads = append(this.Deads, number)
 }
 

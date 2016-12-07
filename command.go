@@ -29,9 +29,9 @@ func Join(n int, isW bool) string {
 func GetDeads() string {
 	var result string
 	for _, n := range croom.Deads {
-		result = result + strconv.Itoa(n) + ","
+		result += strconv.Itoa(n) + ","
 	}
-	result = "死了"
+	result += "死了"
 	return result
 }
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -44,4 +45,15 @@ func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 
 func Subscribe(w weixin.ResponseWriter, r *weixin.Request) {
 	w.ReplyText(HelpMsg) // 有新人关注，返回欢迎消息
+}
+
+func CreateMenu(wx *weixin.Weixin) {
+	menu := &weixin.Menu{make([]weixin.MenuButton, 2)}
+	menu.Buttons[0].Name = "死人名单"
+	menu.Buttons[0].Type = weixin.MenuButtonTypeKey
+	menu.Buttons[1].SubButtons[0].Key = "D 1"
+	err := wx.CreateMenu(menu)
+	if err != nil {
+		fmt.Println(err)
+	}
 }

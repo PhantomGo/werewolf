@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"runtime"
-	"strconv"
 
 	"github.com/wizjin/weixin"
 )
@@ -22,88 +21,6 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	InitSignal()
-}
-
-func Echo(w weixin.ResponseWriter, r *weixin.Request) {
-	txt := r.Content // 获取用户发送的消息
-	if len(txt) < 2 || len(txt) > 3 {
-		w.ReplyText("输入错误")
-	} else {
-		c := Substr(txt, 0, 1)
-		nStr := Substr(txt, 1, 1)
-		n, err := strconv.Atoi(nStr)
-		if err != nil {
-			if nStr == "d" || nStr == "D" {
-				w.ReplyText(GetDeads()) // 回复一条文本消息
-			} else {
-				w.ReplyText("输入错误")
-			}
-		} else {
-			switch c {
-			case "C":
-				fallthrough
-			case "c":
-				w.ReplyText(Create(n))
-			case "K":
-				fallthrough
-			case "k":
-				w.ReplyText(Kill(n))
-			case "S":
-				fallthrough
-			case "s":
-				w.ReplyText(SeekWolf(n))
-			case "R":
-				fallthrough
-			case "r":
-				w.ReplyText(Rescue(n))
-			case "j":
-				fallthrough
-			case "J":
-				if len(txt) == 3 {
-					ww := Substr(txt, 2, 1)
-					w.ReplyText(Join(n, ww == "w"))
-				} else {
-					w.ReplyText("加入游戏请发 j号码g 狼请发 j号码w")
-				}
-			default:
-				w.ReplyText("创建游戏发送 c人数 杀人发 k号码 验人发 s号码")
-			}
-		}
-		//w.PostText("Post:" + txt) // 发送一条文本消息
-	}
-}
-
-func Subscribe(w weixin.ResponseWriter, r *weixin.Request) {
-	w.ReplyText("创建游戏发送 c人数 杀人发 k号码 验人发 s号码") // 有新人关注，返回欢迎消息
-}
-
-func Substr(str string, start int, length int) string {
-	rs := []rune(str)
-	rl := len(rs)
-	end := 0
-
-	if start < 0 {
-		start = rl - 1 + start
-	}
-	end = start + length
-
-	if start > end {
-		start, end = end, start
-	}
-
-	if start < 0 {
-		start = 0
-	}
-	if start > rl {
-		start = rl
-	}
-	if end < 0 {
-		end = 0
-	}
-	if end > rl {
-		end = rl
-	}
-
-	return string(rs[start:end])
 }

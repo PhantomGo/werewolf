@@ -9,9 +9,19 @@ var (
 	croom *room.Room
 )
 
-func Create(n int) string {
+func InitCmds() (cm map[string]func(int) string) {
+	cm = make(map[string]func(int) string, 10)
+	cm["c"] = create
+	cm["d"] = getDeads
+	//cm["j"] = Join
+	cm["k"] = kill
+	cm["r"] = rescue
+	return
+}
+
+func create(n int) string {
 	croom = room.NewRoom(n)
-	return "加入游戏请发 j号码g 狼请发 j号码w"
+	return JoinMsg
 }
 
 func Join(n int, isW bool) string {
@@ -26,7 +36,10 @@ func Join(n int, isW bool) string {
 	return result
 }
 
-func GetDeads() string {
+func getDeads(n int) string {
+	if len(croom.Deads) < 1 {
+		return "没人死"
+	}
 	var result string
 	for _, n := range croom.Deads {
 		result += strconv.Itoa(n) + ","
@@ -35,19 +48,19 @@ func GetDeads() string {
 	return result
 }
 
-func Kill(n int) string {
+func kill(n int) string {
 	croom.Kill(n)
 	return "啊!!"
 }
 
-func SeekWolf(n int) string {
+func seekWolf(n int) string {
 	if croom.CheckWolf(n) {
 		return "狼"
 	}
 	return "好人"
 }
 
-func Rescue(n int) string {
+func rescue(n int) string {
 	if croom.Cure(n) {
 		return strconv.Itoa(n) + "号活了"
 	}

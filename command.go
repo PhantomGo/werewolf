@@ -16,6 +16,7 @@ func InitCmds() (cm map[string]func(int) string) {
 	//cm["j"] = Join
 	cm["k"] = kill
 	cm["r"] = rescue
+	cm["s"] = seekWolf
 	return
 }
 

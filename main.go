@@ -16,7 +16,8 @@ func main() {
 	mux.HandleFunc(weixin.MsgTypeText, Echo)
 	// 注册关注事件的处理函数
 	mux.HandleFunc(weixin.MsgTypeEventSubscribe, Subscribe)
-	http.Handle("/", mux)                  // 注册接收微信服务器数据的接口URI
+	http.Handle("/", mux) // 注册接收微信服务器数据的接口URI
+	go CreateMenu(mux)
 	err := http.ListenAndServe(":80", nil) // 启动接收微信数据服务器
 	if err != nil {
 		fmt.Println(err)

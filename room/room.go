@@ -50,3 +50,21 @@ func (this *Room) Cure(n int) bool {
 	}
 	return false
 }
+
+func (this *Room) Vote(n int) bool {
+	this.Players[n-1].IsDead = true
+	this.Deads = make([]int, 0, 6)
+	good := make([]int, 0, 4)
+	wolf := make([]int, 0, 4)
+	for _, p := range this.Players {
+		if p.IsDead {
+			continue
+		}
+		if p.IsWerewolf {
+			good = append(good, p.Number)
+		} else {
+			wolf = append(wolf, p.Number)
+		}
+	}
+	return len(good) == len(wolf)
+}

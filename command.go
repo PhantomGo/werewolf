@@ -17,6 +17,7 @@ func InitCmds() (cm map[string]func(int) string) {
 	cm["k"] = kill
 	cm["r"] = rescue
 	cm["s"] = seekWolf
+	cm["v"] = vote
 	return
 }
 
@@ -28,7 +29,7 @@ func create(n int) string {
 func Join(n int, isW bool) string {
 	var result string
 	begin := croom.IsBegin()
-	if !begin {
+	if !begin && n <= croom.Count && n > 0 {
 		croom.Join(n, isW)
 		result = strconv.Itoa(n) + "号就位"
 	} else {
@@ -39,13 +40,18 @@ func Join(n int, isW bool) string {
 
 func getDeads(n int) string {
 	if len(croom.Deads) < 1 {
-		return "没人死"
+		return "平安夜"
 	}
 	var result string
-	for _, n := range croom.Deads {
-		result += strconv.Itoa(n) + ","
+	if len(croom.Deads) == 2 {
+		if croom.Deads[0] > croom.Deads[1] {
+			result = strconv.Itoa(croom.Deads[1]) + " " + strconv.Itoa(croom.Deads[0]) + "双死"
+		} else {
+			result = strconv.Itoa(croom.Deads[0]) + " " + strconv.Itoa(croom.Deads[1]) + "双死"
+		}
+	} else {
+		result = strconv.Itoa(croom.Deads[0]) + "死了"
 	}
-	result += "死了"
 	return result
 }
 
@@ -66,4 +72,11 @@ func rescue(n int) string {
 		return strconv.Itoa(n) + "号活了"
 	}
 	return "救错了"
+}
+
+func vote(n int) string {
+	if croom.Vote(n) {
+		return "游戏结束"
+	}
+	return "进入黑夜"
 }

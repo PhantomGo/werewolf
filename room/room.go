@@ -21,7 +21,12 @@ func (this *Room) Join(n int, wolf bool) *Player {
 }
 
 func (this *Room) IsBegin() bool {
-	return len(this.Players) == this.Count
+	for _, p := range this.Players {
+		if p == nil {
+			return false
+		}
+	}
+	return true
 }
 
 func (this *Room) Kill(number int) {

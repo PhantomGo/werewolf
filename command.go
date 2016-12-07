@@ -14,12 +14,12 @@ func Create(n int) string {
 	return "加入游戏请发 j号码g 狼请发 j号码w"
 }
 
-func Join(n int) string {
+func Join(n int, isW bool) string {
 	var result string
 	begin := croom.IsBegin()
 	if !begin {
-		croom.Join(n, true)
-		result = "你是" + strconv.Itoa(n) + "号"
+		croom.Join(n, isW)
+		result = strconv.Itoa(n) + "号就位"
 	} else {
 		result = "游戏开始了,发送 c 重新创建"
 	}
@@ -40,9 +40,16 @@ func Kill(n int) string {
 	return "啊!!"
 }
 
-func CheckWolf(n int) string {
+func SeekWolf(n int) string {
 	if croom.CheckWolf(n) {
 		return "狼"
 	}
 	return "好人"
+}
+
+func Rescue(n int) string {
+	if croom.Cure(n) {
+		return strconv.Itoa(n) + "号活了"
+	}
+	return "救错了"
 }

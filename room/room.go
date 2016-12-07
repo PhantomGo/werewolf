@@ -39,3 +39,13 @@ func (this *Room) CheckWolf(n int) bool {
 	}
 	return false
 }
+
+func (this *Room) Cure(n int) bool {
+	for i, p := range this.Deads {
+		if p == n {
+			this.Deads = append(this.Deads[:i], this.Deads[i+1:]...)
+			return true
+		}
+	}
+	return false
+}

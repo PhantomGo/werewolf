@@ -41,8 +41,8 @@ func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 		w.ReplyText(HelpMsg)
 		return
 	}
-
-	w.ReplyText(cMap[c](n))
+	w.ReplyOK()
+	//w.ReplyText(cMap[c](n))
 	w.PostText("Post:" + r.FromUserName + "/" + r.ToUserName) // 发送一条文本消息
 }
 

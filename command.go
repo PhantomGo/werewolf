@@ -18,6 +18,7 @@ func InitCmds() (cm map[string]func(string, int) string) {
 	cm["r"] = rescue
 	cm["s"] = seekWolf
 	cm["v"] = vote
+	cm["l"] = plist
 	return
 }
 
@@ -88,6 +89,17 @@ func vote(id string, n int) string {
 		return "游戏结束"
 	}
 	return "进入黑夜"
+}
+
+func plist(id string, n int) string {
+	var result string
+	for i, p := range croom.Players {
+		if p != nil {
+			result += strconv.Itoa(i) + ","
+		}
+	}
+	result += "已加入游戏"
+	return result
 }
 
 func findP(id string) *room.Player {

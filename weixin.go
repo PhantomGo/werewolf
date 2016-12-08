@@ -37,7 +37,8 @@ func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 	if _, ok := cMap[c]; !ok {
 		if c == "j" {
 			var sk uint
-			switch cmds[2] {
+			s := strings.ToLower(cmds[2])
+			switch s {
 			case "w":
 				sk = 1
 			case "s":

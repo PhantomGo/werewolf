@@ -43,7 +43,7 @@ func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 	}
 
 	w.ReplyText(cMap[c](n))
-	//w.PostText("Post:" + txt) // 发送一条文本消息
+	w.PostText("Post:" + txt) // 发送一条文本消息
 }
 
 func Subscribe(w weixin.ResponseWriter, r *weixin.Request) {

@@ -14,8 +14,8 @@ func NewRoom(count int) *Room {
 	return r
 }
 
-func (this *Room) Join(n int, wolf bool) *Player {
-	p := NewPlayer(n, wolf)
+func (this *Room) Join(id string, n int, skill uint) *Player {
+	p := NewPlayer(id, n, skill)
 	this.Players[n-1] = p
 	return p
 }

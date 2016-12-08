@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	HelpMsg = "创建游戏发送 c人数 杀人 k号码 验人 s号码 救人 r号码"
-	JoinMsg = "加入游戏请发 j号码g 狼请发 j号码w"
+	HelpMsg   = "创建游戏发送 c人数 杀人 k号码 验人 s号码 救人 r号码"
+	JoinMsg   = "加入游戏请发 j号码g 狼请发 j号码w"
+	ForbidMsg = "你没权限"
 )
 
 var (
@@ -35,14 +36,24 @@ func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 
 	if _, ok := cMap[c]; !ok {
 		if c == "j" {
-			w.ReplyText(Join(n, cmds[2] == "w"))
+			var sk uint
+			switch cmds[2] {
+			case "w":
+				sk = 1
+			case "s":
+				sk = 2
+			case "wt":
+				sk = 3
+			default:
+				sk = 0
+			}
+			w.ReplyText(Join(n, r.FromUserName, sk))
 			return
 		}
 		w.ReplyText(HelpMsg)
 		return
 	}
-	//w.ReplyText(cMap[c](n))
-	w.ReplyText("Post:" + r.FromUserName + "/" + r.ToUserName) // 发送一条文本消息
+	w.ReplyText(cMap[c](r.FromUserName, n))
 }
 
 func Subscribe(w weixin.ResponseWriter, r *weixin.Request) {

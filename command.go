@@ -9,8 +9,8 @@ var (
 	croom *room.Room
 )
 
-func InitCmds() (cm map[string]func(int) string) {
-	cm = make(map[string]func(int) string, 10)
+func InitCmds() (cm map[string]func(string, int) string) {
+	cm = make(map[string]func(string, int) string, 10)
 	cm["c"] = create
 	cm["d"] = getDeads
 	//cm["j"] = Join
@@ -21,16 +21,16 @@ func InitCmds() (cm map[string]func(int) string) {
 	return
 }
 
-func create(n int) string {
+func create(id string, n int) string {
 	croom = room.NewRoom(n)
 	return JoinMsg
 }
 
-func Join(n int, isW bool) string {
+func Join(n int, id string, skill uint) string {
 	var result string
 	begin := croom.IsBegin()
 	if !begin && n <= croom.Count && n > 0 {
-		croom.Join(n, isW)
+		croom.Join(id, n, skill)
 		result = strconv.Itoa(n) + "号就位"
 	} else {
 		result = "游戏开始了,发送 c 重新创建"
@@ -38,7 +38,7 @@ func Join(n int, isW bool) string {
 	return result
 }
 
-func getDeads(n int) string {
+func getDeads(id string, n int) string {
 	if len(croom.Deads) < 1 {
 		return "平安夜"
 	}
@@ -55,28 +55,46 @@ func getDeads(n int) string {
 	return result
 }
 
-func kill(n int) string {
-	croom.Kill(n)
-	return "啊!!"
-}
-
-func seekWolf(n int) string {
-	if croom.CheckWolf(n) {
-		return "狼"
+func kill(id string, n int) string {
+	if p := findP(id); p != nil && p.CanKill() {
+		croom.Kill(n)
+		return "啊!!"
 	}
-	return "好人"
+	return "你不能杀人"
 }
 
-func rescue(n int) string {
-	if croom.Cure(n) {
-		return strconv.Itoa(n) + "号活了"
+func seekWolf(id string, n int) string {
+	if p := findP(id); p != nil && p.IsSeeker {
+		if croom.CheckWolf(n) {
+			return "狼"
+		}
+		return "好人"
 	}
-	return "救错了"
+	return ForbidMsg
 }
 
-func vote(n int) string {
+func rescue(id string, n int) string {
+	if p := findP(id); p != nil && p.IsWitch {
+		if croom.Cure(n) {
+			return strconv.Itoa(n) + "号活了"
+		}
+		return "救错了"
+	}
+	return ForbidMsg
+}
+
+func vote(id string, n int) string {
 	if croom.Vote(n) {
 		return "游戏结束"
 	}
 	return "进入黑夜"
+}
+
+func findP(id string) *room.Player {
+	for _, p := range croom.Players {
+		if p.OpenId == id {
+			return p
+		}
+	}
+	return nil
 }

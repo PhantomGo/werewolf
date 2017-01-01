@@ -3,10 +3,12 @@ package main
 import (
 	"strconv"
 	"werewolf/room"
+	"werewolf/wall"
 )
 
 var (
 	croom *room.Room
+	pw    *wall.Wall
 )
 
 func InitCmds() (cm map[string]func(string, int) string) {
@@ -19,12 +21,14 @@ func InitCmds() (cm map[string]func(string, int) string) {
 	cm["s"] = seekWolf
 	cm["v"] = vote
 	cm["l"] = plist
+	cm["pw"] = addPoint
+	pw = wall.NewWall()
 	return
 }
 
 func create(id string, n int) string {
 	croom = room.NewRoom(n)
-	return JoinMsg
+	return "房间号" + strconv.Itoa(croom.ID) + JoinMsg
 }
 
 func Join(n int, id string, skill uint) string {
@@ -100,6 +104,11 @@ func plist(id string, n int) string {
 	}
 	result += "已加入游戏"
 	return result
+}
+
+func addPoint(id string, n int) string {
+	pw.Add(croom.ID, n, id)
+	return "success"
 }
 
 func findP(id string) *room.Player {

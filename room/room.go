@@ -1,16 +1,19 @@
 package room
 
+var roomIDSeq int = 1
+
 type Room struct {
-	Id      int
+	ID      int
 	Count   int
 	Players []*Player
 	Deads   []int
 }
 
 func NewRoom(count int) *Room {
-	r := &Room{Count: count, Id: 0}
+	r := &Room{Count: count, ID: roomIDSeq}
 	r.Players = make([]*Player, count)
 	r.Deads = make([]int, 0, 6)
+	roomIDSeq++
 	return r
 }
 

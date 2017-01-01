@@ -10,7 +10,7 @@ import (
 
 const (
 	HelpMsg   = "创建游戏发送 c人数 杀人 k号码 验人 s号码 救人 r号码"
-	JoinMsg   = "加入游戏请发 j号码g 狼请发 j号码w"
+	JoinMsg   = " 加入游戏请发 j号码g 狼请发 j号码w"
 	ForbidMsg = "你没权限"
 )
 

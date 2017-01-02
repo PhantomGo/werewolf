@@ -8,7 +8,7 @@ import (
 
 var (
 	croom *room.Room
-	pw    *wall.Wall
+	PW    *wall.Wall
 )
 
 func InitCmds() (cm map[string]func(string, int) string) {
@@ -22,7 +22,7 @@ func InitCmds() (cm map[string]func(string, int) string) {
 	cm["v"] = vote
 	cm["l"] = plist
 	cm["pw"] = addPoint
-	pw = wall.NewWall()
+	PW = wall.NewWall()
 	return
 }
 
@@ -107,7 +107,7 @@ func plist(id string, n int) string {
 }
 
 func addPoint(id string, n int) string {
-	pw.Add(croom.ID, n, id)
+	PW.Add(croom.ID, n, id)
 	return "success"
 }
 

@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"runtime"
 
+	"encoding/json"
+
 	"github.com/wizjin/weixin"
 )
 
@@ -16,11 +18,20 @@ func main() {
 	mux.HandleFunc(weixin.MsgTypeText, Echo)
 	// 注册关注事件的处理函数
 	mux.HandleFunc(weixin.MsgTypeEventSubscribe, Subscribe)
-	http.Handle("/", mux)                  // 注册接收微信服务器数据的接口URI
+	http.Handle("/", mux) // 注册接收微信服务器数据的接口URI
+	http.HandleFunc("/wall", wallHandler)
 	err := http.ListenAndServe(":80", nil) // 启动接收微信数据服务器
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	InitSignal()
+}
+
+func wallHandler(w http.ResponseWriter, r *http.Request) {
+	if b, e := json.Marshal(PW.Show()); e == nil {
+		w.Write(b)
+	} else {
+		w.WriteHeader(500)
+	}
 }

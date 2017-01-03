@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -29,7 +28,7 @@ func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 	c = strings.ToLower(c)
 	nStr := cmds[1]
 	n, err := strconv.Atoi(nStr)
-	if err != nil && c != "d" {
+	if err != nil && c != "d" && c != "name" {
 		w.ReplyText(HelpMsg)
 		return
 	}
@@ -50,6 +49,9 @@ func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 			}
 			w.ReplyText(Join(n, r.FromUserName, sk))
 			return
+		} else if c == "name" {
+			w.ReplyText(SetName(r.FromUserName, nStr))
+			return
 		}
 		w.ReplyText(HelpMsg)
 		return
@@ -59,33 +61,4 @@ func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 
 func Subscribe(w weixin.ResponseWriter, r *weixin.Request) {
 	w.ReplyText(HelpMsg) // 有新人关注，返回欢迎消息
-}
-
-func CreateMenu(wx *weixin.Weixin) {
-	menu := &weixin.Menu{make([]weixin.MenuButton, 2)}
-	menu.Buttons[0].Name = "死亡名单"
-	menu.Buttons[0].Type = weixin.MenuButtonTypeKey
-	menu.Buttons[0].Key = "D 1"
-	menu.Buttons[1].Name = "创建游戏"
-	menu.Buttons[1].SubButtons = make([]weixin.MenuButton, 5)
-	menu.Buttons[1].SubButtons[0].Name = "8人局"
-	menu.Buttons[1].SubButtons[0].Type = weixin.MenuButtonTypeKey
-	menu.Buttons[1].SubButtons[0].Key = "c 8"
-	menu.Buttons[1].SubButtons[1].Name = "9人局"
-	menu.Buttons[1].SubButtons[1].Type = weixin.MenuButtonTypeKey
-	menu.Buttons[1].SubButtons[1].Key = "c 9"
-	menu.Buttons[1].SubButtons[2].Name = "9人局"
-	menu.Buttons[1].SubButtons[2].Type = weixin.MenuButtonTypeKey
-	menu.Buttons[1].SubButtons[2].Key = "c 10"
-	menu.Buttons[1].SubButtons[3].Name = "10人局"
-	menu.Buttons[1].SubButtons[3].Type = weixin.MenuButtonTypeKey
-	menu.Buttons[1].SubButtons[3].Key = "c 10"
-	menu.Buttons[1].SubButtons[4].Name = "12人局"
-	menu.Buttons[1].SubButtons[4].Type = weixin.MenuButtonTypeKey
-	menu.Buttons[1].SubButtons[4].Key = "c 12"
-
-	err := wx.CreateMenu(menu)
-	if err != nil {
-		fmt.Println(err)
-	}
 }

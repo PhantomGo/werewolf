@@ -106,6 +106,11 @@ func plist(id string, n int) string {
 	return result
 }
 
+func SetName(id, n string) string {
+	wall.NameMap[id] = n
+	return "hello," + n
+}
+
 func addPoint(id string, n int) string {
 	PW.Add(croom.ID, n, id)
 	return "success"

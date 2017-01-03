@@ -1,10 +1,8 @@
 package wall
 
-import (
-	"fmt"
-	"strconv"
-	"time"
-)
+import "time"
+
+var NameMap map[string]string
 
 type Wall struct {
 	Points []*PointRecord
@@ -18,6 +16,7 @@ type PointRecord struct {
 }
 
 func NewWall() *Wall {
+	NameMap = make(map[string]string, 40)
 	return &Wall{Points: make([]*PointRecord, 0, 1000)}
 }
 
@@ -28,9 +27,6 @@ func (w *Wall) Add(rid, p int, oid string) (err error) {
 		OpenID: oid,
 		CTime:  time.Now().String(),
 	})
-	for _, p := range w.Points {
-		fmt.Println(strconv.Itoa(p.RoomID) + " " + p.OpenID + " " + p.CTime)
-	}
 	return err
 }
 

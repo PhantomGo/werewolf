@@ -47,6 +47,9 @@ func (w *Wall) Show() (pw []*PointWall) {
 		}
 	}
 	for n, pm := range pMap {
+		if name, ok := NameMap[n]; ok {
+			n = name
+		}
 		pw = append(pw, &PointWall{Name: n, PointTotal: pm.Total, PointAverage: float32(pm.Total) / pm.Count})
 	}
 	return

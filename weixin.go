@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	HelpMsg   = "创建游戏发送 c人数 杀人 k号码 验人 s号码 救人 r号码"
-	JoinMsg   = " 加入游戏请发 j号码g 狼请发 j号码w"
+	HelpMsg   = "创建游戏发送:c 人数 杀人:k 号码 验人:s 号码 救人:r 号码"
+	JoinMsg   = " 加入游戏请发 'j 号码 g' 狼请发 'j 号码 w'"
 	ForbidMsg = "你没权限"
 )
 
@@ -48,9 +48,6 @@ func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 				sk = 0
 			}
 			w.ReplyText(Join(n, r.FromUserName, sk))
-			return
-		} else if c == "name" {
-			w.ReplyText(SetName(r.FromUserName, nStr))
 			return
 		}
 		w.ReplyText(HelpMsg)

@@ -3,12 +3,10 @@ package main
 import (
 	"strconv"
 	"werewolf/room"
-	"werewolf/wall"
 )
 
 var (
 	croom *room.Room
-	PW    *wall.Wall
 )
 
 func InitCmds() (cm map[string]func(string, int) string) {
@@ -21,8 +19,6 @@ func InitCmds() (cm map[string]func(string, int) string) {
 	cm["s"] = seekWolf
 	cm["v"] = vote
 	cm["l"] = plist
-	cm["pw"] = addPoint
-	PW = wall.NewWall()
 	return
 }
 
@@ -104,16 +100,6 @@ func plist(id string, n int) string {
 	}
 	result += "已加入游戏"
 	return result
-}
-
-func SetName(id, n string) string {
-	wall.NameMap[id] = n
-	return "hello," + n
-}
-
-func addPoint(id string, n int) string {
-	PW.Add(croom.ID, n, id)
-	return "success"
 }
 
 func findP(id string) *room.Player {
